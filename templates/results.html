@@ -19,6 +19,7 @@
 {% for metric in metrics %}
     {% set best_val = namespace(v=-1, name="") %}
     {% for r in data.results %}
+        {# r[metric] == r[metric] is False when value is NaN (IEEE 754 NaN != NaN) #}
         {% if r[metric] is not none and r[metric] == r[metric] and r[metric] > best_val.v %}
             {% set best_val.v = r[metric] %}
             {% set best_val.name = r["model"] %}
@@ -45,6 +46,7 @@
                 <td class="fw-semibold">{{ r.model }}</td>
                 {% for metric in metrics %}
                 <td class="{{ 'table-success fw-bold' if best[metric] == r.model else '' }}">
+                {# r[metric] == r[metric] is False when value is NaN (IEEE 754 NaN != NaN) #}
                     {% if r[metric] is not none and r[metric] == r[metric] %}
                         {{ "%.4f" | format(r[metric]) }}
                     {% else %}
