@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="hero-section text-center py-5 mb-5 rounded-3">
+    <h1 class="display-4 fw-bold">Disease Outcome Prediction</h1>
+    <p class="lead mt-3 mb-0">
+        Machine learning–powered predictions for Breast Cancer, Diabetes, and Heart Disease.<br>
+        Compare multiple classifiers or get an instant prediction.
+    </p>
+</div>
+
+<div class="row g-4 justify-content-center">
+    {% set icons = {"breast_cancer": "🎗️", "diabetes": "💉", "heart_disease": "❤️"} %}
+    {% for key, display in diseases %}
+    <div class="col-md-4">
+        <div class="card disease-card h-100 shadow-sm">
+            <div class="card-body text-center p-4">
+                <div class="fs-1 mb-3">{{ icons.get(key, "🔬") }}</div>
+                <h4 class="card-title fw-semibold">{{ display }}</h4>
+                <p class="card-text text-muted small mb-4">
+                    Use trained ML models to compare performance or predict outcomes for {{ display }}.
+                </p>
+                <div class="d-grid gap-2">
+                    <form method="POST" action="/results">
+                        <input type="hidden" name="disease" value="{{ key }}">
+                        <button type="submit" class="btn btn-primary w-100">📊 Compare Models</button>
+                    </form>
+                    <a href="/predict/{{ key }}" class="btn btn-outline-success">🔍 Make Prediction</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
